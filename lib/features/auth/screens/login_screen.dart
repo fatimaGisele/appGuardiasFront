@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/services/auth_service.dart';
 import '../widgets/auth_text_field.dart';
+import '../../../core/constants/app_theme.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -43,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(result['error']),
-          backgroundColor: Colors.red[400],
+          backgroundColor: AppColors.error,
           behavior: SnackBarBehavior.floating,
           )
         );
@@ -53,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       backgroundColor: const Color(0xFFF0F4F8),
+       backgroundColor: AppColors.background,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -66,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: 80,
                   height: 80,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF4A90D9),
+                    color: AppColors.primary,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: const Icon(
@@ -87,30 +88,20 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 8),
                 Text(
                   'Iniciá sesión para continuar',
-                  style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                  style: AppTextStyles.heading1,
                 ),
                 const SizedBox(height: 40),
 
                 // Formulario
                 Container(
                   padding: const EdgeInsets.all(24),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha:0.06),
-                        blurRadius: 20,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
+                  decoration: AppDecorations.card,
                   child: Form(
                     key: _formKey,
                     child: Column(
                       children: [
                         AuthTextField(
-                          label: 'Email',
+                          label: 'Email', 
                           hint: 'tu@email.com',
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,

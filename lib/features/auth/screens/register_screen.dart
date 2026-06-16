@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/services/auth_service.dart';
 import '../widgets/auth_text_field.dart';
+import '../../../core/constants/app_theme.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -69,7 +70,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Usuario creado correctamente'),
-          backgroundColor: Colors.green,
+          backgroundColor: AppColors.success,
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -78,7 +79,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(result['errors'].toString()),
-          backgroundColor: Colors.red[400],
+          backgroundColor: AppColors.error,
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -88,12 +89,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF0F4F8),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF2D3748)),
+          icon: const Icon(Icons.arrow_back_ios, color: AppColors.textPrimary),
           onPressed: () => context.go('/login'),
         ),
       ),
@@ -104,31 +105,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
             children: [
               const Text(
                 'Crear cuenta',
-                style: TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF2D3748),
-                ),
+                style: AppTextStyles.heading1,
               ),
               const SizedBox(height: 8),
               Text(
                 'Completá tus datos para registrarte',
-                style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                style: AppTextStyles.bodySecondary,
               ),
               const SizedBox(height: 24),
               Container(
                 padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.06),
-                      blurRadius: 20,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
+                decoration: AppDecorations.card,
                 child: Form(
                   key: _formKey,
                   child: Column(
@@ -200,35 +187,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         children: [
                           const Text(
                             'Rol',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xFF2D3748),
-                            ),
+                            style: AppTextStyles.label,
                           ),
                           const SizedBox(height: 6),
                           DropdownButtonFormField<int>(
                             value: _rolSeleccionado,
-                            hint: const Text('Seleccioná un rol'),
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: const Color(0xFFF7FAFC),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide(color: Colors.grey[300]!),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide(color: Colors.grey[300]!),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: const BorderSide(
-                                    color: Color(0xFF4A90D9), width: 2),
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 14),
-                            ),
+                            hint: const Text('Seleccioná un rol', style: AppTextStyles.bodySecondary),
+                            decoration: AppDecorations.inputDecoration(hint: ''),
                             items: _roles.map((rol) {
                               return DropdownMenuItem<int>(
                                 value: rol['id'],
@@ -248,14 +213,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         height: 50,
                         child: ElevatedButton(
                           onPressed: _isLoading ? null : _register,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF4A90D9),
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            elevation: 0,
-                          ),
+                          style: AppDecorations.primaryButton,
                           child: _isLoading
                               ? const SizedBox(
                                   width: 20,
@@ -267,10 +225,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 )
                               : const Text(
                                   'Crear cuenta',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                  style: AppTextStyles.button,
                                 ),
                         ),
                       ),
@@ -283,15 +238,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text('¿Ya tenés cuenta? ',
-                      style: TextStyle(color: Colors.grey[600])),
+                      style: AppTextStyles.bodySecondary),
                   GestureDetector(
                     onTap: () => context.go('/login'),
                     child: const Text(
                       'Iniciá sesión',
-                      style: TextStyle(
-                        color: Color(0xFF4A90D9),
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: AppTextStyles.link,
                     ),
                   ),
                 ],

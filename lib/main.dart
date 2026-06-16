@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'router/app_router.dart';
+import 'core/constants/app_theme.dart';
 
 void main() {
   runApp(const GuardiasApp());
@@ -15,12 +16,7 @@ class GuardiasApp extends StatelessWidget {
       title: 'Sistema de Guardias Demo',
       debugShowCheckedModeBanner: false,
       routerConfig: appRouter,
-      theme: ThemeData(
-        fontFamily: 'Roboto',
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF4A90D9),),
-        useMaterial3: true,)
+      theme: AppTheme.theme,
     );
   }
 }
-
-
