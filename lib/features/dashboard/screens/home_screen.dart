@@ -75,51 +75,33 @@ class _HomeScreenState extends State<HomeScreen> {
               SliverToBoxAdapter(
                 child: Container(
                   padding: const EdgeInsets.fromLTRB(24, 24, 24, 20),
-                  decoration: const BoxDecoration(
-                    color: AppColors.primary,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(28),
-                      bottomRight: Radius.circular(28),
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    border: Border(
+                      bottom: BorderSide(color: AppColors.bordeColor),
                     ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Hola, $nombre 👋',
-                                style: const TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                rol.toString().toUpperCase(),
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.white.withValues(alpha: 0.8),
-                                  fontWeight: FontWeight.w500,
-                                  letterSpacing: 1.2,
-                                ),
-                              ),
-                            ],
-                          ),
-                          // Botón logout
-                          IconButton(
-                            onPressed: _logout,
-                            icon: const Icon(
-                              Icons.logout_rounded,
-                              color: Colors.white,
+                          Text(
+                            'BLINDSPOT',
+                            style: AppTextStyles.hud.copyWith(
+                              fontSize: 13,
+                              color: AppColors.primary,
                             ),
                           ),
+                          const SizedBox(height: 4),
+                          Text('Hola, $nombre 👋', style: AppTextStyles.heading2),
+                          Text(rol.toString().toUpperCase(), style: AppTextStyles.hud),
                         ],
+                      ),
+                      IconButton(
+                        onPressed: _logout,
+                        icon: const Icon(Icons.logout_rounded, color: AppColors.textSecondary),
                       ),
                     ],
                   ),
