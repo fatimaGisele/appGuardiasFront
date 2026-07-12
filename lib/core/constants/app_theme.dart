@@ -30,6 +30,7 @@ class AppColors {
 
 class AppTextStyles {
   static const TextStyle heading1 = TextStyle(
+    fontFamily: 'Questrial',
     fontSize: 26,
     fontWeight: FontWeight.bold,
     color: AppColors.textPrimary,
@@ -37,6 +38,7 @@ class AppTextStyles {
   );
 
   static const TextStyle heading2 = TextStyle(
+    fontFamily: 'Questrial',
     fontSize: 20,
     fontWeight: FontWeight.bold,
     color: AppColors.textPrimary,
@@ -44,22 +46,26 @@ class AppTextStyles {
   );
 
   static const TextStyle heading3 = TextStyle(
+    fontFamily: 'Questrial',
     fontSize: 16,
     fontWeight: FontWeight.w600,
     color: AppColors.textPrimary,
   );
 
   static const TextStyle body = TextStyle(
+    fontFamily: 'Exo2',
     fontSize: 14,
     color: AppColors.textPrimary,
   );
 
   static const TextStyle bodySecondary = TextStyle(
+    fontFamily: 'Exo2',
     fontSize: 14,
     color: AppColors.textSecondary,
   );
 
   static const TextStyle label = TextStyle(
+    fontFamily: 'Exo2',
     fontSize: 14,
     fontWeight: FontWeight.w600,
     color: AppColors.textPrimary,
@@ -67,12 +73,14 @@ class AppTextStyles {
   );
 
   static const TextStyle caption = TextStyle(
+    fontFamily: 'Exo2',
     fontSize: 12,
     color: AppColors.textSecondary,
     letterSpacing: 0.2,
   );
 
   static const TextStyle button = TextStyle(
+    fontFamily: 'Exo2',
     fontSize: 16,
     fontWeight: FontWeight.w700,
     color: Colors.white,
@@ -80,12 +88,14 @@ class AppTextStyles {
   );
 
   static const TextStyle link = TextStyle(
+    fontFamily: 'Exo2',
     fontSize: 14,
     fontWeight: FontWeight.w600,
     color: AppColors.primary,
   );
 
   static const TextStyle hud = TextStyle(
+    fontFamily: 'Questrial',
     fontSize: 11,
     fontWeight: FontWeight.w700,
     color: AppColors.primary,
@@ -179,14 +189,27 @@ class AppDecorations {
   );
 }
 
-class AppTheme { //falta
+class AppTheme {
   static ThemeData get theme => ThemeData(
-    fontFamily: 'Roboto',
+    fontFamily: 'Exo2',  
     useMaterial3: true,
-    colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
+    brightness: Brightness.dark,
     scaffoldBackgroundColor: AppColors.background,
+    colorScheme: const ColorScheme.dark(
+      primary: AppColors.primary,
+      secondary: AppColors.accent,
+      surface: AppColors.surface,
+      error: AppColors.error,
+    ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: AppDecorations.primaryButton,
-    )
+    ),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: AppColors.background,
+      foregroundColor: AppColors.textPrimary,
+      elevation: 0,
+    ),
+    dividerColor: AppColors.bordeColor,
+    iconTheme: const IconThemeData(color: AppColors.textSecondary),
   );
 }

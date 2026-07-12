@@ -107,7 +107,102 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-
+              
+              // Acciones rápidas — solo para lider/encargado
+              if (rol == 'lider' || rol == 'encargado') ...[
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Acciones', style: AppTextStyles.heading2),
+                        const SizedBox(height: 16),
+                        Row(
+                          children: [
+                            // Botón asignar turno
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () => context.go('/turnos/crear'),
+                                child: Container(
+                                  padding: const EdgeInsets.all(16),
+                                  decoration: AppDecorations.cardGlow,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.primary.withValues(alpha: 0.15),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: const Icon(
+                                          Icons.add_circle_outline,
+                                          color: AppColors.primary,
+                                          size: 22,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 12),
+                                      Text('Asignar turno', style: AppTextStyles.heading3),
+                                      const SizedBox(height: 4),
+                                      Text('Crear y asignar guardia', style: AppTextStyles.caption),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            // Botón calendario
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () => context.go('/calendario'),
+                                child: Container(
+                                  padding: const EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.surface,
+                                    borderRadius: BorderRadius.circular(16),
+                                    border: Border.all(
+                                      color: AppColors.accent.withValues(alpha: 0.4),
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: AppColors.accent.withValues(alpha: 0.08),
+                                        blurRadius: 20,
+                                        offset: const Offset(0, 4),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.accent.withValues(alpha: 0.15),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: const Icon(
+                                          Icons.calendar_month_outlined,
+                                          color: AppColors.accent,
+                                          size: 22,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 12),
+                                      Text('Calendario', style: AppTextStyles.heading3),
+                                      const SizedBox(height: 4),
+                                      Text('Ver turnos del mes', style: AppTextStyles.caption),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
               // Stats cards
               SliverToBoxAdapter(
                 child: Padding(
