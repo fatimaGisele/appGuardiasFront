@@ -22,17 +22,17 @@ class _HomeScreenState extends State<HomeScreen> {
   Map<String, dynamic>? _usuario;
 
   // Estadísticas
-  int get _turnosActivos =>
-      _turnos.where((t) => t.estado == 'activo').length;
+  int get _turnosActivos => _turnos.where((t) => t.estado == 'activo').length;
   int get _turnosProgramados =>
       _turnos.where((t) => t.estado == 'programado').length;
-  int get _turnosPerdidos =>
-      _turnos.where((t) => t.estado == 'perdido').length;
+  int get _turnosPerdidos => _turnos.where((t) => t.estado == 'perdido').length;
 
   @override
   void initState() {
     super.initState();
-    _cargarDatos();
+    WidgetsBinding.instance.addPostFrameCallback((_) {  
+      _cargarDatos();
+    });
   }
 
   Future<void> _cargarDatos() async {
@@ -95,19 +95,28 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           const SizedBox(height: 4),
-                          Text('Hola, $nombre 👋', style: AppTextStyles.heading2),
-                          Text(rol.toString().toUpperCase(), style: AppTextStyles.hud),
+                          Text(
+                            'Hola, $nombre 👋',
+                            style: AppTextStyles.heading2,
+                          ),
+                          Text(
+                            rol.toString().toUpperCase(),
+                            style: AppTextStyles.hud,
+                          ),
                         ],
                       ),
                       IconButton(
                         onPressed: _logout,
-                        icon: const Icon(Icons.logout_rounded, color: AppColors.textSecondary),
+                        icon: const Icon(
+                          Icons.logout_rounded,
+                          color: AppColors.textSecondary,
+                        ),
                       ),
                     ],
                   ),
                 ),
               ),
-              
+
               // Acciones rápidas — solo para lider/encargado
               if (rol == 'lider' || rol == 'encargado') ...[
                 SliverToBoxAdapter(
@@ -128,13 +137,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                   padding: const EdgeInsets.all(16),
                                   decoration: AppDecorations.cardGlow,
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Container(
                                         padding: const EdgeInsets.all(8),
                                         decoration: BoxDecoration(
-                                          color: AppColors.primary.withValues(alpha: 0.15),
-                                          borderRadius: BorderRadius.circular(10),
+                                          color: AppColors.primary.withValues(
+                                            alpha: 0.15,
+                                          ),
+                                          borderRadius: BorderRadius.circular(
+                                            10,
+                                          ),
                                         ),
                                         child: const Icon(
                                           Icons.add_circle_outline,
@@ -143,9 +157,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                       ),
                                       const SizedBox(height: 12),
-                                      Text('Asignar turno', style: AppTextStyles.heading3),
+                                      Text(
+                                        'Asignar turno',
+                                        style: AppTextStyles.heading3,
+                                      ),
                                       const SizedBox(height: 4),
-                                      Text('Crear y asignar guardia', style: AppTextStyles.caption),
+                                      Text(
+                                        'Crear y asignar guardia',
+                                        style: AppTextStyles.caption,
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -162,24 +182,33 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: AppColors.surface,
                                     borderRadius: BorderRadius.circular(16),
                                     border: Border.all(
-                                      color: AppColors.accent.withValues(alpha: 0.4),
+                                      color: AppColors.accent.withValues(
+                                        alpha: 0.4,
+                                      ),
                                     ),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: AppColors.accent.withValues(alpha: 0.08),
+                                        color: AppColors.accent.withValues(
+                                          alpha: 0.08,
+                                        ),
                                         blurRadius: 20,
                                         offset: const Offset(0, 4),
                                       ),
                                     ],
                                   ),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Container(
                                         padding: const EdgeInsets.all(8),
                                         decoration: BoxDecoration(
-                                          color: AppColors.accent.withValues(alpha: 0.15),
-                                          borderRadius: BorderRadius.circular(10),
+                                          color: AppColors.accent.withValues(
+                                            alpha: 0.15,
+                                          ),
+                                          borderRadius: BorderRadius.circular(
+                                            10,
+                                          ),
                                         ),
                                         child: const Icon(
                                           Icons.calendar_month_outlined,
@@ -188,9 +217,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                       ),
                                       const SizedBox(height: 12),
-                                      Text('Calendario', style: AppTextStyles.heading3),
+                                      Text(
+                                        'Calendario',
+                                        style: AppTextStyles.heading3,
+                                      ),
                                       const SizedBox(height: 4),
-                                      Text('Ver turnos del mes', style: AppTextStyles.caption),
+                                      Text(
+                                        'Ver turnos del mes',
+                                        style: AppTextStyles.caption,
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -272,7 +307,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: _FiltroEstado(
                     onFiltrar: (estado) async {
                       setState(() => _isLoading = true);
-                      final turnos = await TurnoService.getTurnos(estado: estado);
+                      final turnos = await TurnoService.getTurnos(
+                        estado: estado,
+                      );
                       setState(() {
                         _turnos = turnos;
                         _isLoading = false;
@@ -288,33 +325,38 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Center(child: CircularProgressIndicator()),
                     )
                   : _turnos.isEmpty
-                      ? SliverFillRemaining(
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.inbox_outlined,
-                                    size: 48, color: AppColors.textSecondary),
-                                const SizedBox(height: 12),
-                                Text('No hay turnos',
-                                    style: AppTextStyles.bodySecondary),
-                              ],
+                  ? SliverFillRemaining(
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.inbox_outlined,
+                              size: 48,
+                              color: AppColors.textSecondary,
                             ),
-                          ),
-                        )
-                      : SliverPadding(
-                          padding: const EdgeInsets.fromLTRB(24, 12, 24, 24),
-                          sliver: SliverList(
-                            delegate: SliverChildBuilderDelegate(
-                              (context, index) => TurnoCard(
-                                turno: _turnos[index],
-                                onTap: () =>
-                                    context.go('/turnos/${_turnos[index].id}'),
-                              ),
-                              childCount: _turnos.length,
+                            const SizedBox(height: 12),
+                            Text(
+                              'No hay turnos',
+                              style: AppTextStyles.bodySecondary,
                             ),
-                          ),
+                          ],
                         ),
+                      ),
+                    )
+                  : SliverPadding(
+                      padding: const EdgeInsets.fromLTRB(24, 12, 24, 24),
+                      sliver: SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) => TurnoCard(
+                            turno: _turnos[index],
+                            onTap: () =>
+                                context.go('/turnos/${_turnos[index].id}'),
+                          ),
+                          childCount: _turnos.length,
+                        ),
+                      ),
+                    ),
             ],
           ),
         ),
@@ -370,8 +412,7 @@ class _FiltroEstadoState extends State<_FiltroEstado> {
                 style: TextStyle(
                   color: isSelected ? Colors.white : AppColors.textSecondary,
                   fontSize: 13,
-                  fontWeight:
-                      isSelected ? FontWeight.w600 : FontWeight.normal,
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                 ),
               ),
             ),

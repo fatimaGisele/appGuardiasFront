@@ -24,4 +24,31 @@ class TurnoService {
     );
     return response.statusCode==200;
   }
+
+  static Future<Map<String, dynamic>> crearTurno({
+  required String nombre,
+  required String descripcion,
+  required DateTime fechaInicio,
+  required DateTime fechaFin,
+  required int usuarioAsignadoId,
+  required int usuarioRalevoId,
+  required int calendarioId,
+}) async {
+  final response = await ApiCliente.post(ApiConstants.turnos, {
+    'nombre': nombre,
+    'descripcion': descripcion,
+    'fecha_inicio': fechaInicio.toIso8601String(),
+    'fecha_fin': fechaFin.toIso8601String(),
+    'usuario_asignado': usuarioAsignadoId,
+    'usuario_relevo_id': usuarioRalevoId,
+    'calendario': calendarioId,
+    'grupo_escalamiento': 1, // ← hacer un selector
+  });
+
+  if (response.statusCode == 201) {
+    return {'success': true};
+  }
+  final data = jsonDecode(response.body);
+  return {'success': false, 'error': data.toString()};
+}
 }

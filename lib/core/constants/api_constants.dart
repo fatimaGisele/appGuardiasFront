@@ -6,10 +6,13 @@ class ApiConstants {
   static const String register = '$baseUrl/auth/register/';
 
   //Turnos
-  static const String turnos = '$baseUrl/auth/turnos/';
+  static const String turnos = '$baseUrl/turnos/';
 
   //Usuarios
-  static const String usuarios = '$baseUrl/auth/usuarios/';
+  static const String usuarios = '$baseUrl/usuarios/';
+
+  //calendario
+  static const String calendario = '$baseUrl/calendario/';
 
   
 }
