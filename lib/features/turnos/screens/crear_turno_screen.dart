@@ -36,10 +36,11 @@ class _CrearTurnoScreenState extends State<CrearTurnoScreen> {
   }
 
   Future<void> _cargarDatos() async {
-    final usuarios = await UsuarioService.getUsuarios();
+    final todos = await UsuarioService.getUsuarios();
+    final guardias = todos.where((u) => u['rol'] == 3 || u['rol'] == 4).toList();
     final calendarios = await CalendarioService.getCalendarios();
     setState(() {
-      _usuarios = usuarios;
+      _usuarios = guardias;
       _calendarios = calendarios;
       _loadingData = false;
     });
@@ -87,7 +88,11 @@ class _CrearTurnoScreenState extends State<CrearTurnoScreen> {
     if (hora == null) return;
 
     final fechaHora = DateTime(
-      fecha.year, fecha.month, fecha.day, hora.hour, hora.minute,
+      fecha.year,
+      fecha.month,
+      fecha.day,
+      hora.hour,
+      hora.minute,
     );
 
     setState(() {
@@ -186,7 +191,6 @@ class _CrearTurnoScreenState extends State<CrearTurnoScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
                     // Nombre del turno
                     Text('Nombre del turno', style: AppTextStyles.label),
                     const SizedBox(height: 6),
@@ -230,12 +234,17 @@ class _CrearTurnoScreenState extends State<CrearTurnoScreen> {
                                   decoration: BoxDecoration(
                                     color: AppColors.inputFill,
                                     borderRadius: BorderRadius.circular(12),
-                                    border: Border.all(color: AppColors.bordeColor),
+                                    border: Border.all(
+                                      color: AppColors.bordeColor,
+                                    ),
                                   ),
                                   child: Row(
                                     children: [
-                                      const Icon(Icons.calendar_today_outlined,
-                                          color: AppColors.primary, size: 18),
+                                      const Icon(
+                                        Icons.calendar_today_outlined,
+                                        color: AppColors.primary,
+                                        size: 18,
+                                      ),
                                       const SizedBox(width: 8),
                                       Text(
                                         _fechaInicio != null
@@ -269,12 +278,17 @@ class _CrearTurnoScreenState extends State<CrearTurnoScreen> {
                                   decoration: BoxDecoration(
                                     color: AppColors.inputFill,
                                     borderRadius: BorderRadius.circular(12),
-                                    border: Border.all(color: AppColors.bordeColor),
+                                    border: Border.all(
+                                      color: AppColors.bordeColor,
+                                    ),
                                   ),
                                   child: Row(
                                     children: [
-                                      const Icon(Icons.calendar_today_outlined,
-                                          color: AppColors.accent, size: 18),
+                                      const Icon(
+                                        Icons.calendar_today_outlined,
+                                        color: AppColors.accent,
+                                        size: 18,
+                                      ),
                                       const SizedBox(width: 8),
                                       Text(
                                         _fechaFin != null
@@ -303,8 +317,10 @@ class _CrearTurnoScreenState extends State<CrearTurnoScreen> {
                     const SizedBox(height: 6),
                     DropdownButtonFormField<int>(
                       value: _usuarioAsignadoId,
-                      hint: Text('Seleccioná el guardia',
-                          style: AppTextStyles.bodySecondary),
+                      hint: Text(
+                        'Seleccioná el guardia',
+                        style: AppTextStyles.bodySecondary,
+                      ),
                       dropdownColor: AppColors.surface,
                       style: const TextStyle(color: AppColors.textPrimary),
                       decoration: AppDecorations.inputDecoration(
@@ -316,7 +332,9 @@ class _CrearTurnoScreenState extends State<CrearTurnoScreen> {
                           value: u['idusuario'],
                           child: Text(
                             '${u['nombre']} ${u['apellido']}',
-                            style: const TextStyle(color: AppColors.textPrimary),
+                            style: const TextStyle(
+                              color: AppColors.textPrimary,
+                            ),
                           ),
                         );
                       }).toList(),
@@ -329,8 +347,10 @@ class _CrearTurnoScreenState extends State<CrearTurnoScreen> {
                     const SizedBox(height: 6),
                     DropdownButtonFormField<int>(
                       value: _usuarioRalevoId,
-                      hint: Text('Seleccioná el relevo',
-                          style: AppTextStyles.bodySecondary),
+                      hint: Text(
+                        'Seleccioná el relevo',
+                        style: AppTextStyles.bodySecondary,
+                      ),
                       dropdownColor: AppColors.surface,
                       style: const TextStyle(color: AppColors.textPrimary),
                       decoration: AppDecorations.inputDecoration(
@@ -342,7 +362,9 @@ class _CrearTurnoScreenState extends State<CrearTurnoScreen> {
                           value: u['idusuario'],
                           child: Text(
                             '${u['nombre']} ${u['apellido']}',
-                            style: const TextStyle(color: AppColors.textPrimary),
+                            style: const TextStyle(
+                              color: AppColors.textPrimary,
+                            ),
                           ),
                         );
                       }).toList(),
@@ -355,8 +377,10 @@ class _CrearTurnoScreenState extends State<CrearTurnoScreen> {
                     const SizedBox(height: 6),
                     DropdownButtonFormField<int>(
                       value: _calendarioId,
-                      hint: Text('Seleccioná el calendario',
-                          style: AppTextStyles.bodySecondary),
+                      hint: Text(
+                        'Seleccioná el calendario',
+                        style: AppTextStyles.bodySecondary,
+                      ),
                       dropdownColor: AppColors.surface,
                       style: const TextStyle(color: AppColors.textPrimary),
                       decoration: AppDecorations.inputDecoration(
@@ -368,7 +392,9 @@ class _CrearTurnoScreenState extends State<CrearTurnoScreen> {
                           value: c['idcalendario'],
                           child: Text(
                             c['nombre'],
-                            style: const TextStyle(color: AppColors.textPrimary),
+                            style: const TextStyle(
+                              color: AppColors.textPrimary,
+                            ),
                           ),
                         );
                       }).toList(),
