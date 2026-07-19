@@ -21,13 +21,13 @@ class Turno {
 
   factory Turno.fromJson(Map<String, dynamic> json) {
     return Turno(
-      id: json['idTurno'],
+      id: (json['idTurno'] ?? 0) as int,
       nombre: json['nombre'] ??'',
       descripcion: json['descripcion'],
       estado: json['estado'] ?? 'programado',
-      fechaInicio: DateTime.parse(json['fechaInicio']),
-      fechaFin: DateTime.parse(json['fechaFin']),
-      usuarioNombre: json['usuarioNombre']
+      fechaInicio: DateTime.parse(json['fecha_inicio']?? DateTime.now().toIso8601String()),
+      fechaFin: DateTime.parse(json['fecha_fin'] ?? DateTime.now().toIso8601String()),
+      usuarioNombre: json['usuario_nombre']
     );
   }
 }

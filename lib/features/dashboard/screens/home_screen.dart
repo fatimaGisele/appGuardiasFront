@@ -18,19 +18,22 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<Turno> _turnos = [];
+  List<Turno> _todosLosTurnos = [];
   bool _isLoading = true;
   Map<String, dynamic>? _usuario;
 
   // Estadísticas
-  int get _turnosActivos => _turnos.where((t) => t.estado == 'activo').length;
+  int get _turnosActivos =>
+      _todosLosTurnos.where((t) => t.estado == 'activo').length;
   int get _turnosProgramados =>
-      _turnos.where((t) => t.estado == 'programado').length;
-  int get _turnosPerdidos => _turnos.where((t) => t.estado == 'perdido').length;
+      _todosLosTurnos.where((t) => t.estado == 'programado').length;
+  int get _turnosPerdidos =>
+      _todosLosTurnos.where((t) => t.estado == 'perdido').length;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {  
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _cargarDatos();
     });
   }
@@ -45,9 +48,10 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     // Cargar turnos
-    final turnos = await TurnoService.getTurnos();
+    final todos = await TurnoService.getTurnos();
     setState(() {
-      _turnos = turnos;
+      _todosLosTurnos = todos;
+      _turnos = todos;
       _isLoading = false;
     });
   }
@@ -375,7 +379,7 @@ class _FiltroEstado extends StatefulWidget {
 }
 
 class _FiltroEstadoState extends State<_FiltroEstado> {
-  String? _seleccionado;
+  String? _seleccionado = null;
 
   final List<Map<String, dynamic>> _filtros = [
     {'label': 'Todos', 'value': null},
@@ -384,6 +388,11 @@ class _FiltroEstadoState extends State<_FiltroEstado> {
     {'label': 'Perdidos', 'value': 'perdido'},
     {'label': 'Completados', 'value': 'completado'},
   ];
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

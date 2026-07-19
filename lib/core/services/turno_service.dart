@@ -7,13 +7,26 @@ class TurnoService {
   static Future<List<Turno>> getTurnos({String? estado}) async {
     String url = ApiConstants.turnos;
     if (estado != null) url += '?estado=$estado';
+    print('URL: $url');
 
     final response = await ApiCliente.get(url);
+    print('STATUS: ${response.statusCode}');  
+    print('BODY: ${response.body}');
 
     if (response.statusCode == 200) {
       final List data = jsonDecode(response.body);
-      return data.map((json) => Turno.fromJson(json)).toList();
+      List<Turno> turnos = [];
+      for (var json in data) {
+        try {
+          turnos.add(Turno.fromJson(json));
+        } catch (e) {
+          print('ERROR parseando turno: $json');
+          print('Error: $e');
+        }
+      }
+      return turnos;
     }
+      //return data.map((json) => Turno.fromJson(json)).toList();
     return [];
   }
 
