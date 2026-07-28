@@ -4,6 +4,9 @@ import '../features/auth/screens/register_screen.dart';
 import '../features/dashboard/screens/home_screen.dart';
 import '../features/turnos/screens/crear_turno_screen.dart';
 import '../features/calendario/screens/calendario_screen.dart';
+import '../features/equipo/screens/equipo_screen.dart';
+import '../features/equipo/screens/detalle_equipo_screen.dart';
+import '../features/equipo/screens/equipos_screen.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/login',
@@ -14,5 +17,15 @@ final appRouter = GoRouter(
     GoRoute(path: '/turnos',builder: (context, state) => const CrearTurnoScreen()),
     GoRoute(path: '/turnos/crear',builder: (context, state) => const CrearTurnoScreen()),
     GoRoute(path: '/calendario',builder: (context, state) => const CalendarioScreen()),
+    GoRoute(path: '/equipo',builder: (context, state) => const EquipoScreen()),
+    GoRoute(path: '/equipos',builder: (context, state) => const EquiposScreen(),),
+    GoRoute(path: '/equipos/:id',builder: (context, state) {
+      final grupo = state.extra as Map<String, dynamic>;
+      return DetalleEquipoScreen(
+        grupoId: int.parse(state.pathParameters['id']!),
+        nombreGrupo: grupo['nombre'] ?? 'Equipo',
+        );
+      },
+    ),
   ],
 );

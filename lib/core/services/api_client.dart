@@ -32,4 +32,12 @@ class ApiCliente {
       body: jsonEncode(body),
     );
   }
+
+  static Future<http.Response> delete(String url)
+  async{
+    return http.delete(
+      Uri.parse(url),
+      headers: await _authHeaders(),
+    );
+  }
 }

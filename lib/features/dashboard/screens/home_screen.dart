@@ -234,8 +234,48 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                               ),
-                            ),
+                            ),                         
                           ],
+                        ),
+                           // ESTADISTICA EQUIPO:
+                            const SizedBox(height: 12),
+                            GestureDetector(
+                              onTap: () => context.go('/equipos'),
+                              child: Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  color: AppColors.surface,
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(
+                                    color: AppColors.success.withValues(alpha: 0.4),
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.success.withValues(alpha: 0.15),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: const Icon(
+                                        Icons.group_outlined,
+                                        color: AppColors.success,
+                                        size: 22,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text('Mi Equipo', style: AppTextStyles.heading3),
+                                        Text('Ver estadísticas del equipo', style: AppTextStyles.caption),
+                                      ],
+                                    ),
+                                  ],
+                              ),
+                            ),
                         ),
                       ],
                     ),

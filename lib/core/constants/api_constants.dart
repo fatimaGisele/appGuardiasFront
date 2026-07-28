@@ -14,5 +14,10 @@ class ApiConstants {
   //calendario
   static const String calendario = '$baseUrl/calendario/';
 
-  
+  //estadisticas
+  static const String estadisticasEquipos = '$baseUrl/usuarios/estadisticas/';
+
+  //manejoGrupo
+  static const String gruposEscalamiento = '$baseUrl/grupo_escalamiento/';
+  static const String usuarioGrupo = '$baseUrl/usuario_grupo/';
 }
