@@ -113,7 +113,13 @@ class _EquiposScreenState extends State<EquiposScreen> {
         ),
         actions: [
           IconButton(
+            icon: const Icon(Icons.person_add_outlined, color: AppColors.success),
+            tooltip: 'Crear usuario',
+            onPressed: () => context.go('/equipos/crear-usuario'),
+          ),
+          IconButton(
             icon: const Icon(Icons.add, color: AppColors.primary),
+            tooltip: 'Crear equipo',
             onPressed: _mostrarCrearGrupo,
           ),
         ],

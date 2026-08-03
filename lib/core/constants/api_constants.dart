@@ -7,6 +7,7 @@ class ApiConstants {
 
   //Turnos
   static const String turnos = '$baseUrl/turnos/';
+  static const String misTurnos = '$baseUrl/turnos/mis-turnos/';
 
   //Usuarios
   static const String usuarios = '$baseUrl/usuarios/';
@@ -20,4 +21,7 @@ class ApiConstants {
   //manejoGrupo
   static const String gruposEscalamiento = '$baseUrl/grupo_escalamiento/';
   static const String usuarioGrupo = '$baseUrl/usuario_grupo/';
+
+  //relevos
+  static const String misRelevosPendientes = '$baseUrl/relevos/mis-pendientes/';
 }

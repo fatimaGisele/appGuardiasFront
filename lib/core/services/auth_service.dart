@@ -52,7 +52,7 @@ class AuthService {
         'telefono': telefono,
         'password': password,
         'password2': password2,
-        'rolId': rolId,
+        'rol_id': rolId,
       }),
     );
     final data = jsonDecode(responde.body);

@@ -37,7 +37,7 @@ class TurnoService {
     );
     return response.statusCode==200;
   }
-
+  
   static Future<Map<String, dynamic>> crearTurno({
   required String nombre,
   required String descripcion,
@@ -64,4 +64,19 @@ class TurnoService {
   final data = jsonDecode(response.body);
   return {'success': false, 'error': data.toString()};
 }
+
+  static Future<List<Turno>> getMisTurnos() async {
+    final response = await ApiCliente.get(ApiConstants.misTurnos);
+    if (response.statusCode == 200) {
+      final List data = jsonDecode(response.body);
+      List<Turno> turnos = [];
+      for (var json in data) {
+        try { turnos.add(Turno.fromJson(json)); } catch (e) { print(e); }
+      }
+      return turnos;
+    }
+    return [];
+  }
+
+ 
 }

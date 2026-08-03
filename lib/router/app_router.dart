@@ -7,23 +7,45 @@ import '../features/calendario/screens/calendario_screen.dart';
 import '../features/equipo/screens/equipo_screen.dart';
 import '../features/equipo/screens/detalle_equipo_screen.dart';
 import '../features/equipo/screens/equipos_screen.dart';
+import '../features/equipo/screens/crear_usuario_screen.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/login',
   routes: [
     GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
-    GoRoute(path: '/register',builder: (context, state) => const RegisterScreen()),
+    GoRoute(
+      path: '/register',
+      builder: (context, state) => const RegisterScreen(),
+    ),
     GoRoute(path: '/home', builder: (context, state) => const HomeScreen()),
-    GoRoute(path: '/turnos',builder: (context, state) => const CrearTurnoScreen()),
-    GoRoute(path: '/turnos/crear',builder: (context, state) => const CrearTurnoScreen()),
-    GoRoute(path: '/calendario',builder: (context, state) => const CalendarioScreen()),
-    GoRoute(path: '/equipo',builder: (context, state) => const EquipoScreen()),
-    GoRoute(path: '/equipos',builder: (context, state) => const EquiposScreen(),),
-    GoRoute(path: '/equipos/:id',builder: (context, state) {
-      final grupo = state.extra as Map<String, dynamic>;
-      return DetalleEquipoScreen(
-        grupoId: int.parse(state.pathParameters['id']!),
-        nombreGrupo: grupo['nombre'] ?? 'Equipo',
+    GoRoute(
+      path: '/turnos',
+      builder: (context, state) => const CrearTurnoScreen(),
+    ),
+    GoRoute(
+      path: '/turnos/crear',
+      builder: (context, state) => const CrearTurnoScreen(),
+    ),
+    GoRoute(
+      path: '/calendario',
+      builder: (context, state) => const CalendarioScreen(),
+    ),
+    GoRoute(path: '/equipo', builder: (context, state) => const EquipoScreen()),
+    GoRoute(
+      path: '/equipos',
+      builder: (context, state) => const EquiposScreen(),
+    ),
+    GoRoute(
+      path: '/equipos/crear-usuario',
+      builder: (context, state) => const CrearUsuarioScreen(),
+    ),
+    GoRoute(
+      path: '/equipos/:id',
+      builder: (context, state) {
+        final grupo = state.extra as Map<String, dynamic>;
+        return DetalleEquipoScreen(
+          grupoId: int.parse(state.pathParameters['id']!),
+          nombreGrupo: grupo['nombre'] ?? 'Equipo',
         );
       },
     ),
