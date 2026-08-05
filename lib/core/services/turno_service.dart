@@ -7,11 +7,8 @@ class TurnoService {
   static Future<List<Turno>> getTurnos({String? estado}) async {
     String url = ApiConstants.turnos;
     if (estado != null) url += '?estado=$estado';
-    print('URL: $url');
 
     final response = await ApiCliente.get(url);
-    print('STATUS: ${response.statusCode}');  
-    print('BODY: ${response.body}');
 
     if (response.statusCode == 200) {
       final List data = jsonDecode(response.body);
@@ -20,7 +17,6 @@ class TurnoService {
         try {
           turnos.add(Turno.fromJson(json));
         } catch (e) {
-          print('ERROR parseando turno: $json');
           print('Error: $e');
         }
       }
@@ -37,7 +33,7 @@ class TurnoService {
     );
     return response.statusCode==200;
   }
-  
+
   static Future<Map<String, dynamic>> crearTurno({
   required String nombre,
   required String descripcion,
