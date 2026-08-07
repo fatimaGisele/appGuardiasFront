@@ -33,7 +33,7 @@ class _RegularUserHomeScreenState extends State<RegularUserHomeScreen> {
     final userStr = await StorageService.getUserData();
     if (userStr != null) _usuario = jsonDecode(userStr);
 
-    final turnos = await TurnoService.getTurnos();
+    final turnos = await TurnoService.getMisTurnos();
     final relevos = await RelevoService.getMisRelevosPendientes();
 
     setState(() {
@@ -153,7 +153,49 @@ class _RegularUserHomeScreenState extends State<RegularUserHomeScreen> {
                   ),
                 ),
               ),
-
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+                    child: GestureDetector(
+                      onTap: () => context.go('/vacaciones/solicitar'),
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: AppColors.surface,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: AppColors.success.withValues(alpha: 0.4),
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: AppColors.success.withValues(alpha: 0.15),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: const Icon(Icons.beach_access_outlined,
+                                  color: AppColors.success, size: 22),
+                            ),
+                            const SizedBox(width: 12),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Solicitar vacaciones', style: AppTextStyles.heading3),
+                                Text('Ver días disponibles y solicitar',
+                                    style: AppTextStyles.caption),
+                              ],
+                            ),
+                            const Spacer(),
+                            const Icon(Icons.chevron_right,
+                                color: AppColors.textSecondary),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               // Relevos pendientes
               if (_relevosPendientes.isNotEmpty) ...[
                 SliverToBoxAdapter(

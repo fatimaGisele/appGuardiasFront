@@ -8,6 +8,13 @@ import '../features/equipo/screens/equipo_screen.dart';
 import '../features/equipo/screens/detalle_equipo_screen.dart';
 import '../features/equipo/screens/equipos_screen.dart';
 import '../features/equipo/screens/crear_usuario_screen.dart';
+import '../features/vacaciones/screens/solicitar_vacacion_screen.dart';
+import 'dart:convert';
+import 'package:flutter/material.dart';
+import '../../../core/constants/app_theme.dart';
+import '../../../core/services/storage_service.dart';
+import '../features/dashboard/screens/home_screen.dart';
+import '../features/dashboard/screens/regular_user_home_screen.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/login',
@@ -17,7 +24,7 @@ final appRouter = GoRouter(
       path: '/register',
       builder: (context, state) => const RegisterScreen(),
     ),
-    GoRoute(path: '/home', builder: (context, state) => const HomeScreen()),
+    GoRoute(path: '/home', builder: (context, state) => const _HomeRouter()),
     GoRoute(
       path: '/turnos',
       builder: (context, state) => const CrearTurnoScreen(),
@@ -49,5 +56,36 @@ final appRouter = GoRouter(
         );
       },
     ),
+    GoRoute(
+      path: '/vacaciones/solicitar',
+      builder: (context, state) => const SolicitarVacacionScreen(),
+    ),
   ],
 );
+
+class _HomeRouter extends StatelessWidget {
+  const _HomeRouter({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<String?>(
+      future: StorageService.getUserData(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Scaffold(
+            backgroundColor: AppColors.background,
+            body: Center(
+              child: CircularProgressIndicator(color: AppColors.primary),
+            ),
+          );
+        }
+        final usuario = jsonDecode(snapshot.data!);
+        final rol = usuario['rol'] ?? '';
+        if (rol == 'lider' || rol == 'encargado') {
+          return const HomeScreen();
+        }
+        return const RegularUserHomeScreen();
+      },
+    );
+  }
+}

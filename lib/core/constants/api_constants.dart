@@ -24,4 +24,9 @@ class ApiConstants {
 
   //relevos
   static const String misRelevosPendientes = '$baseUrl/relevos/mis-pendientes/';
+
+  //vacaciones
+  static const String vacaciones = '$baseUrl/vacaciones/';
+  static const String misDiasVacaciones = '$baseUrl/vacaciones/mis-dias/';
+  static const String vacacionesPendientes = '$baseUrl/vacaciones/pendientes/';
 }
