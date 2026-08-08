@@ -46,11 +46,11 @@ class VacacionesService {
           'aprobador': aprobadorId,
           'motivo': motivo,
         });
-    if (response.statusCode == 200) {
-      return {'success': true};
-    }
-    final data = jsonDecode(response.body);
-    return {'success': false, 'error': data.toString()};
+      if (response.statusCode == 201) {
+        return {'success': true};
+      }
+      final data = jsonDecode(response.body);
+      return {'success': false, 'error': data.toString()};
   }
 
   //aprobar

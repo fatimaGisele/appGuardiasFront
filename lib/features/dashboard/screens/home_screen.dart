@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:guardias_front/core/services/vacaciones_service.dart';
 import 'dart:convert';
 import '../../../core/constants/app_theme.dart';
 import '../../../core/models/turno_model.dart';
@@ -176,6 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                             const SizedBox(width: 12),
+                           
                             // Botón calendario
                             Expanded(
                               child: GestureDetector(
@@ -237,7 +239,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),                         
                           ],
                         ),
-                           // ESTADISTICA EQUIPO:
+                        
+                           // mi EQUIPO:
                             const SizedBox(height: 12),
                             GestureDetector(
                               onTap: () => context.go('/equipos'),
@@ -277,72 +280,138 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-              // Stats cards
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Resumen', style: AppTextStyles.heading2),
-                      const SizedBox(height: 16),
-                      if (_isLoading)
-                        const Center(child: CircularProgressIndicator())
-                      else
-                        GridView.count(
-                          crossAxisCount: 3,
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 12,
-                          childAspectRatio: 0.9,
-                          children: [
-                            StatCard(
-                              title: 'Activos',
-                              value: _turnosActivos.toString(),
-                              icon: Icons.play_circle_outline,
-                              color: AppColors.success,
+                                          // boton vacaciones
+                      const SizedBox(height: 12),
+                      GestureDetector(
+                        onTap: () => context.go('/vacaciones/aprobar'),
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: AppColors.surface,
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                              color: AppColors.warning.withValues(alpha: 0.4),
                             ),
-                            StatCard(
-                              title: 'Programados',
-                              value: _turnosProgramados.toString(),
-                              icon: Icons.schedule_outlined,
-                              color: AppColors.info,
-                            ),
-                            StatCard(
-                              title: 'Perdidos',
-                              value: _turnosPerdidos.toString(),
-                              icon: Icons.warning_amber_outlined,
-                              color: AppColors.error,
-                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: AppColors.warning.withValues(alpha: 0.15),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: const Icon(Icons.beach_access_outlined,
+                                    color: AppColors.warning, size: 22),
+                              ),
+                              const SizedBox(width: 12),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Vacaciones', style: AppTextStyles.heading3),
+                                  Text('Aprobar solicitudes pendientes',
+                                      style: AppTextStyles.caption),
+                                ],
+                              ),
+                              const Spacer(),
+                              // Badge con cantidad pendiente
+                              FutureBuilder<List<Map<String, dynamic>>>(
+                                future: VacacionesService.getPendientes(),
+                                builder: (context, snapshot) {
+                                  final cantidad = snapshot.data?.length ?? 0;
+                                  if (cantidad == 0) {
+                                    return const Icon(Icons.chevron_right,
+                                        color: AppColors.textSecondary);
+                                  }
+                                  return Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 4),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.warning,
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Text(
+                                      '$cantidad',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                           ],
                         ),
-                    ],
-                  ),
-                ),
-              ),
-
-              // Lista de turnos
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Turnos', style: AppTextStyles.heading2),
-                      GestureDetector(
-                        onTap: () => context.go('/turnos'),
-                        child: Text('Ver todos', style: AppTextStyles.link),
                       ),
-                    ],
+                    ),
+                  ],
+                  // Stats cards
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Resumen', style: AppTextStyles.heading2),
+                          const SizedBox(height: 16),
+                          if (_isLoading)
+                            const Center(child: CircularProgressIndicator())
+                          else
+                            GridView.count(
+                              crossAxisCount: 3,
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              crossAxisSpacing: 12,
+                              mainAxisSpacing: 12,
+                              childAspectRatio: 0.9,
+                              children: [
+                                StatCard(
+                                  title: 'Activos',
+                                  value: _turnosActivos.toString(),
+                                  icon: Icons.play_circle_outline,
+                                  color: AppColors.success,
+                                ),
+                                StatCard(
+                                  title: 'Programados',
+                                  value: _turnosProgramados.toString(),
+                                  icon: Icons.schedule_outlined,
+                                  color: AppColors.info,
+                                ),
+                                StatCard(
+                                  title: 'Perdidos',
+                                  value: _turnosPerdidos.toString(),
+                                  icon: Icons.warning_amber_outlined,
+                                  color: AppColors.error,
+                                ),
+                              ],
+                            ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              ),
+
+                  // Lista de turnos
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Turnos', style: AppTextStyles.heading2),
+                          GestureDetector(
+                            onTap: () => context.go('/turnos'),
+                            child: Text('Ver todos', style: AppTextStyles.link),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
 
               // Filtros de estado
               SliverToBoxAdapter(
