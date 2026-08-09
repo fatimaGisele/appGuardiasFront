@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:guardias_front/core/services/vacaciones_service.dart';
 import 'package:intl/intl.dart';
 import '../../../core/constants/app_theme.dart';
 import '../../../core/models/turno_model.dart';
@@ -17,19 +17,23 @@ class _CalendarioScreenState extends State<CalendarioScreen> {
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime.now();
   List<Turno> _todosTurnos = [];
+  List<Map<String, dynamic>> _vacaciones = [];
   bool _isLoading = true;
+  
 
   @override
   void initState() {
     super.initState();
-    _cargarTurnos();
+    _cargarDatos();
   }
 
-  Future<void> _cargarTurnos() async {
+  Future<void> _cargarDatos() async {
     setState(() => _isLoading = true);
     final turnos = await TurnoService.getTurnos();
+    final vacaciones = await VacacionesService.getParaCalendario();
     setState(() {
       _todosTurnos = turnos;
+      _vacaciones = vacaciones;
       _isLoading = false;
     });
   }
@@ -43,6 +47,20 @@ class _CalendarioScreenState extends State<CalendarioScreen> {
     }).toList();
   }
 
+//vacaiones del dia seleciionadp en el calendario
+  List<Map<String, dynamic>> _vacacionesDelDia(DateTime dia) {
+    return _vacaciones.where((v) {
+      final inicio = DateTime.parse(v['fecha_inicio']);
+      final fin = DateTime.parse(v['fecha_fin']);
+      return !dia.isBefore(inicio) && !dia.isAfter(fin);
+    }).toList();
+  }
+
+  //verifuca un dia puntal
+  bool _tieneVacaciones(DateTime dia) {
+    return _vacacionesDelDia(dia).isNotEmpty;
+  }
+  
   // Turnos de la semana actual
   List<DateTime> _diasDeLaSemana(DateTime dia) {
     final lunes = dia.subtract(Duration(days: dia.weekday - 1));
@@ -51,10 +69,14 @@ class _CalendarioScreenState extends State<CalendarioScreen> {
 
   Color _colorEstado(String estado) {
     switch (estado) {
-      case 'activo': return AppColors.success;
-      case 'perdido': return AppColors.error;
-      case 'completado': return AppColors.textSecondary;
-      default: return AppColors.primary;
+      case 'activo':
+        return AppColors.success;
+      case 'perdido':
+        return AppColors.error;
+      case 'completado':
+        return AppColors.textSecondary;
+      default:
+        return AppColors.primary;
     }
   }
 
@@ -84,21 +106,30 @@ class _CalendarioScreenState extends State<CalendarioScreen> {
         ],
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
+          ? const Center(
+              child: CircularProgressIndicator(color: AppColors.primary),
+            )
           : Column(
               children: [
-
                 // Navegación semanal
                 Container(
                   color: AppColors.surface,
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-                        icon: const Icon(Icons.chevron_left, color: AppColors.primary),
+                        icon: const Icon(
+                          Icons.chevron_left,
+                          color: AppColors.primary,
+                        ),
                         onPressed: () => setState(() {
-                          _focusedDay = _focusedDay.subtract(const Duration(days: 7));
+                          _focusedDay = _focusedDay.subtract(
+                            const Duration(days: 7),
+                          );
                         }),
                       ),
                       Text(
@@ -106,9 +137,14 @@ class _CalendarioScreenState extends State<CalendarioScreen> {
                         style: AppTextStyles.heading3,
                       ),
                       IconButton(
-                        icon: const Icon(Icons.chevron_right, color: AppColors.primary),
+                        icon: const Icon(
+                          Icons.chevron_right,
+                          color: AppColors.primary,
+                        ),
                         onPressed: () => setState(() {
-                          _focusedDay = _focusedDay.add(const Duration(days: 7));
+                          _focusedDay = _focusedDay.add(
+                            const Duration(days: 7),
+                          );
                         }),
                       ),
                     ],
@@ -121,13 +157,14 @@ class _CalendarioScreenState extends State<CalendarioScreen> {
                   padding: const EdgeInsets.only(bottom: 12),
                   child: Row(
                     children: diasSemana.map((dia) {
-                      final esHoy = dia.year == DateTime.now().year &&
+                      final esHoy =
+                          dia.year == DateTime.now().year &&
                           dia.month == DateTime.now().month &&
                           dia.day == DateTime.now().day;
-                      final esSeleccionado = dia.year == _selectedDay.year &&
+                      final esSeleccionado =
+                          dia.year == _selectedDay.year &&
                           dia.month == _selectedDay.month &&
                           dia.day == _selectedDay.day;
-                      final tieneTurnos = _turnosDelDia(dia).isNotEmpty;
 
                       return Expanded(
                         child: GestureDetector(
@@ -135,7 +172,10 @@ class _CalendarioScreenState extends State<CalendarioScreen> {
                           child: Column(
                             children: [
                               Text(
-                                DateFormat('EEE', 'es').format(dia).toUpperCase(),
+                                DateFormat(
+                                  'EEE',
+                                  'es',
+                                ).format(dia).toUpperCase(),
                                 style: AppTextStyles.caption.copyWith(
                                   color: esSeleccionado
                                       ? AppColors.primary
@@ -152,8 +192,10 @@ class _CalendarioScreenState extends State<CalendarioScreen> {
                                   color: esSeleccionado
                                       ? AppColors.primary
                                       : esHoy
-                                          ? AppColors.primary.withValues(alpha: 0.15)
-                                          : Colors.transparent,
+                                      ? AppColors.primary.withValues(
+                                          alpha: 0.15,
+                                        )
+                                      : Colors.transparent,
                                   shape: BoxShape.circle,
                                 ),
                                 child: Center(
@@ -165,23 +207,35 @@ class _CalendarioScreenState extends State<CalendarioScreen> {
                                       color: esSeleccionado
                                           ? Colors.white
                                           : esHoy
-                                              ? AppColors.primary
-                                              : AppColors.textPrimary,
+                                          ? AppColors.primary
+                                          : AppColors.textPrimary,
                                     ),
                                   ),
                                 ),
                               ),
                               const SizedBox(height: 4),
                               // Punto indicador de turnos
-                              Container(
-                                width: 4,
-                                height: 4,
-                                decoration: BoxDecoration(
-                                  color: tieneTurnos
-                                      ? AppColors.primary
-                                      : Colors.transparent,
-                                  shape: BoxShape.circle,
-                                ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  if (_turnosDelDia(dia).isNotEmpty)
+                                    Container(
+                                      width: 4, height: 4,
+                                      margin: const EdgeInsets.only(right: 2),
+                                      decoration: const BoxDecoration(
+                                        color: AppColors.primary,
+                                        shape: BoxShape.circle,
+                                      ),
+                                    ),
+                                  if (_tieneVacaciones(dia))
+                                    Container(
+                                      width: 4, height: 4,
+                                      decoration: const BoxDecoration(
+                                        color: AppColors.success,
+                                        shape: BoxShape.circle,
+                                      ),
+                                    ),
+                                ],
                               ),
                             ],
                           ),
@@ -200,104 +254,182 @@ class _CalendarioScreenState extends State<CalendarioScreen> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.fromLTRB(24, 20, 24, 12),
-                        child: Row(
-                          children: [
-                            Text(
-                              DateFormat('EEEE d \'de\' MMMM', 'es').format(_selectedDay),
-                              style: AppTextStyles.heading3.copyWith(
-                                color: AppColors.primary,
-                              ),
-                            ),
-                          ],
+                        child: Text(
+                          DateFormat('EEEE d \'de\' MMMM', 'es').format(_selectedDay),
+                          style: AppTextStyles.heading3.copyWith(color: AppColors.primary),
                         ),
                       ),
-                      Expanded(
-                        child: _turnosDelDia(_selectedDay).isEmpty
-                            ? Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.event_available_outlined,
-                                        size: 40, color: AppColors.textSecondary),
-                                    const SizedBox(height: 12),
-                                    Text('Sin turnos este día',
-                                        style: AppTextStyles.bodySecondary),
-                                  ],
+
+                      //turnos del dia
+                      if (_turnosDelDia(_selectedDay).isNotEmpty)
+                        Expanded(
+                          child: ListView.builder(
+                            padding: const EdgeInsets.symmetric(horizontal: 24),
+                            itemCount: _turnosDelDia(_selectedDay).length,
+                            itemBuilder: (context, index) {
+                              final turno = _turnosDelDia(_selectedDay)[index];
+                              final color = _colorEstado(turno.estado);
+                              return Container(
+                                margin: const EdgeInsets.only(bottom: 12),
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  color: AppColors.surface,
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(color: color.withValues(alpha: 0.3)),
                                 ),
-                              )
-                            : ListView.builder(
-                                padding: const EdgeInsets.symmetric(horizontal: 24),
-                                itemCount: _turnosDelDia(_selectedDay).length,
-                                itemBuilder: (context, index) {
-                                  final turno = _turnosDelDia(_selectedDay)[index];
-                                  final color = _colorEstado(turno.estado);
-                                  return Container(
-                                    margin: const EdgeInsets.only(bottom: 12),
-                                    padding: const EdgeInsets.all(16),
-                                    decoration: BoxDecoration(
-                                      color: AppColors.surface,
-                                      borderRadius: BorderRadius.circular(16),
-                                      border: Border.all(
-                                        color: color.withValues(alpha: 0.3),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 4, height: 48,
+                                      decoration: BoxDecoration(
+                                        color: color,
+                                        borderRadius: BorderRadius.circular(4),
                                       ),
                                     ),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          width: 4,
-                                          height: 48,
-                                          decoration: BoxDecoration(
-                                            color: color,
-                                            borderRadius: BorderRadius.circular(4),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(turno.nombre, style: AppTextStyles.heading3),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            '${formato.format(turno.fechaInicio)} - ${formato.format(turno.fechaFin)}',
+                                            style: AppTextStyles.caption,
                                           ),
-                                        ),
-                                        const SizedBox(width: 12),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text(turno.nombre,
-                                                  style: AppTextStyles.heading3),
-                                              const SizedBox(height: 4),
-                                              Text(
-                                                '${formato.format(turno.fechaInicio)} - ${formato.format(turno.fechaFin)}',
-                                                style: AppTextStyles.caption,
-                                              ),
-                                              if (turno.usuarioNombre != null)
-                                                Text(turno.usuarioNombre!,
-                                                    style: AppTextStyles.bodySecondary),
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 10, vertical: 6),
-                                          decoration: BoxDecoration(
-                                            color: color.withValues(alpha: 0.1),
-                                            borderRadius: BorderRadius.circular(20),
-                                          ),
-                                          child: Text(
-                                            turno.estado.toUpperCase(),
-                                            style: TextStyle(
-                                              color: color,
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.w700,
-                                              letterSpacing: 1,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                                          if (turno.usuarioNombre != null)
+                                            Text(turno.usuarioNombre!,
+                                                style: AppTextStyles.bodySecondary),
+                                        ],
+                                      ),
                                     ),
-                                  );
-                                },
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 6),
+                                      decoration: BoxDecoration(
+                                        color: color.withValues(alpha: 0.1),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: Text(
+                                        turno.estado.toUpperCase(),
+                                        style: TextStyle(
+                                          color: color,
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w700,
+                                          letterSpacing: 1,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                      else if (_vacacionesDelDia(_selectedDay).isEmpty)
+                        Expanded(
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.event_available_outlined,
+                                    size: 40, color: AppColors.textSecondary),
+                                const SizedBox(height: 12),
+                                Text('Sin turnos ni vacaciones este día',
+                                    style: AppTextStyles.bodySecondary),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                      // vacaciones del dia
+                      if (_vacacionesDelDia(_selectedDay).isNotEmpty) ...[
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 10, height: 10,
+                                decoration: const BoxDecoration(
+                                  color: AppColors.success, shape: BoxShape.circle,
+                                ),
                               ),
-                      ),
+                              const SizedBox(width: 8),
+                              Text('Vacaciones',
+                                  style: AppTextStyles.heading3
+                                      .copyWith(color: AppColors.success)),
+                            ],
+                          ),
+                        ),
+                        ..._vacacionesDelDia(_selectedDay).map((v) {
+                          final inicio = DateTime.parse(v['fecha_inicio']);
+                          final fin = DateTime.parse(v['fecha_fin']);
+                          return Container(
+                            margin: const EdgeInsets.fromLTRB(24, 0, 24, 12),
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: AppColors.surface,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                  color: AppColors.success.withValues(alpha: 0.3)),
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 4, height: 48,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.success,
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '${v['usuario_nombre']} ${v['usuario_apellido']}',
+                                        style: AppTextStyles.heading3,
+                                      ),
+                                      Text(
+                                        '${DateFormat('dd/MM').format(inicio)} → ${DateFormat('dd/MM').format(fin)}',
+                                        style: AppTextStyles.caption,
+                                      ),
+                                      Text(
+                                        '${v['dias_habiles']} días hábiles',
+                                        style: AppTextStyles.caption
+                                            .copyWith(color: AppColors.success),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 6),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.success.withValues(alpha: 0.1),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: const Text(
+                                    'VACACIONES',
+                                    style: TextStyle(
+                                      color: AppColors.success,
+                                      fontSize: 9,
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 1,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                      ],
                     ],
                   ),
                 ),
-              ],
+              ]
             ),
     );
   }
 }
-

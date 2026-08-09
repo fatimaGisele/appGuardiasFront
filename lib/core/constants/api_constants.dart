@@ -29,4 +29,7 @@ class ApiConstants {
   static const String vacaciones = '$baseUrl/vacaciones/';
   static const String misDiasVacaciones = '$baseUrl/vacaciones/mis-dias/';
   static const String vacacionesPendientes = '$baseUrl/vacaciones/pendientes/';
+
+  //calendario vacacciones regular user
+  static const String vacacionesCalendario = '$baseUrl/vacaciones/calendario/';
 }

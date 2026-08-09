@@ -46,11 +46,11 @@ class VacacionesService {
           'aprobador': aprobadorId,
           'motivo': motivo,
         });
-      if (response.statusCode == 201) {
-        return {'success': true};
-      }
-      final data = jsonDecode(response.body);
-      return {'success': false, 'error': data.toString()};
+    if (response.statusCode == 201) {
+      return {'success': true};
+    }
+    final data = jsonDecode(response.body);
+    return {'success': false, 'error': data.toString()};
   }
 
   //aprobar
@@ -63,11 +63,21 @@ class VacacionesService {
   }
 
   //rechazar
-  static Future<bool> rechazar(int idVacas, {String nota = ''}) async{
+  static Future<bool> rechazar(int idVacas, {String nota = ''}) async {
     final response = await ApiCliente.post(
       '${ApiConstants.vacaciones}$idVacas/rechazar/',
       {'nota': nota},
     );
     return response.statusCode == 200;
+  }
+
+  //para-calendario para regulars users
+  static Future<List<Map<String, dynamic>>> getParaCalendario() async {
+    final response = await ApiCliente.get(ApiConstants.vacacionesCalendario);
+    if (response.statusCode == 200) {
+      final List data = jsonDecode(response.body);
+      return data.cast<Map<String, dynamic>>();
+    }
+    return [];
   }
 }
