@@ -15,6 +15,7 @@ import '../../../core/constants/app_theme.dart';
 import '../../../core/services/storage_service.dart';
 import '../features/dashboard/screens/regular_user_home_screen.dart';
 import '../features/vacaciones/screens/aprobar_vacaciones_screen.dart';
+import '../features/equipo/screens/mi_equipo_screen.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/login',
@@ -60,9 +61,13 @@ final appRouter = GoRouter(
       path: '/vacaciones/solicitar',
       builder: (context, state) => const SolicitarVacacionScreen(),
     ),
-     GoRoute(
+    GoRoute(
       path: '/vacaciones/aprobar',
       builder: (context, state) => const AprobarVacacionesScreen(),
+    ),
+    GoRoute(
+      path: '/mi_equipo',
+      builder: (context, state) => const MiEquipoScreen(),
     ),
   ],
 );
