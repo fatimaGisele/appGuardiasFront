@@ -34,5 +34,5 @@ class ApiConstants {
   static const String vacacionesCalendario = '$baseUrl/vacaciones/calendario/';
 
   //vista del equipo para regular user
-  static const String misEquipos = '$baseUrl/usuario_grupo/mis_equipos/';
+  static const String misEquipos = '$baseUrl/usuario_grupo/mi_equipo/';
 }

@@ -24,7 +24,7 @@ class _MiEquipoScreenState extends State<MiEquipoScreen> {
 
   Future<void> _cargarEquipos() async {
     setState(() => _isLoading = true);
-    final response = await ApiClient.get(ApiConstants.misEquipos);
+    final response = await ApiCliente.get(ApiConstants.misEquipos);
     if (response.statusCode == 200) {
       final List data = jsonDecode(response.body);
       setState(() {
@@ -156,7 +156,7 @@ class _MiEquipoScreenState extends State<MiEquipoScreen> {
                               return Column(
                                 children: [
                                   const Divider(
-                                      color: AppColors.border, height: 1),
+                                      color: AppColors.bordeColor, height: 1),
                                   Padding(
                                     padding: const EdgeInsets.all(16),
                                     child: Row(

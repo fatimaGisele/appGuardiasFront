@@ -243,7 +243,7 @@ SliverToBoxAdapter(
   child: Padding(
     padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
     child: GestureDetector(
-      onTap: () => context.go('/mi-equipo'),
+      onTap: () => context.go('/mi_equipo'),
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
