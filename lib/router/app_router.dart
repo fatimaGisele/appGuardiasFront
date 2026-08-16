@@ -16,6 +16,7 @@ import '../../../core/services/storage_service.dart';
 import '../features/dashboard/screens/regular_user_home_screen.dart';
 import '../features/vacaciones/screens/aprobar_vacaciones_screen.dart';
 import '../features/equipo/screens/mi_equipo_screen.dart';
+import '../features/equipo/screens/editar_usuario_screen.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/login',
@@ -68,6 +69,13 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/mi_equipo',
       builder: (context, state) => const MiEquipoScreen(),
+    ),
+    GoRoute(
+      path: '/equipo/editar_usuario',
+      builder: (context, state) {
+        final usuario = state.extra as Map<String, dynamic>;
+        return EditarUsuarioScreen(usuario: usuario);
+      },
     ),
   ],
 );

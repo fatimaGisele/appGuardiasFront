@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:guardias_front/core/constants/api_constants.dart';
+import 'package:guardias_front/core/services/api_client.dart';
 import '../../../core/constants/app_theme.dart';
 import '../../../core/services/equipo_service.dart';
 import '../../../core/services/usuario_service.dart';
@@ -285,6 +289,21 @@ class _DetalleEquipoScreenState extends State<DetalleEquipoScreen> {
                                   nombre,
                                 ),
                               ),
+                              IconButton(
+  icon: const Icon(Icons.edit_outlined,
+      color: AppColors.primary, size: 20),
+  onPressed: () async {
+    // Cargar datos completos del usuario
+    final response = await ApiCliente.get(
+      '${ApiConstants.usuarios}${m['usuario']}/',
+    );
+    if (!context.mounted) return;
+    if (response.statusCode == 200) {
+      final usuario = jsonDecode(response.body);
+      context.go('/equipo/editar_usuario', extra: usuario);
+    }
+  },
+),
                             ],
                           ),
                         );
