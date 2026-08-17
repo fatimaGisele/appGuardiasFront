@@ -290,20 +290,25 @@ class _DetalleEquipoScreenState extends State<DetalleEquipoScreen> {
                                 ),
                               ),
                               IconButton(
-  icon: const Icon(Icons.edit_outlined,
-      color: AppColors.primary, size: 20),
-  onPressed: () async {
-    // Cargar datos completos del usuario
-    final response = await ApiCliente.get(
-      '${ApiConstants.usuarios}${m['usuario']}/',
-    );
-    if (!context.mounted) return;
-    if (response.statusCode == 200) {
-      final usuario = jsonDecode(response.body);
-      context.go('/equipo/editar_usuario', extra: usuario);
-    }
-  },
-),
+                                icon: const Icon(Icons.edit_outlined,
+                                    color: AppColors.primary, size: 20),
+                                onPressed: () async {
+                                  final detalle = m['usuario_detalle'] as Map<String, dynamic>?;
+                                  if (detalle != null) {
+                                    context.go('/equipo/editar_usuario', extra: detalle);
+                                  }
+                                  // Cargar datos completos del usuario
+                 
+                                  //   final response = await ApiCliente.get(
+                                  //   '${ApiConstants.usuarios}${m['usuario']}/',
+                                  // );
+                                  // if (!context.mounted) return;
+                                  // if (response.statusCode == 200) {
+                                  //   final usuario = jsonDecode(response.body);
+                                  //   context.go('/equipo/editar_usuario', extra: usuario);
+                                  // }
+                                },
+                              ),
                             ],
                           ),
                         );

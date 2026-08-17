@@ -180,7 +180,14 @@ class _EditarUsuarioScreenState extends State<EditarUsuarioScreen> {
                       controller: _nombreCtrl,
                       prefixIcon: Icons.person_outline,
                       validator: (v) => v!.isEmpty ? 'Requerido' : null,
-                    ),
+                    ),Text(
+                        'Actual: ${widget.usuario['nombre']}',
+                        style: AppTextStyles.caption.copyWith(
+                          color: AppColors.textHint,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
                     AuthTextField(
                       label: 'Apellido',
                       hint: 'Apellido',
@@ -188,6 +195,14 @@ class _EditarUsuarioScreenState extends State<EditarUsuarioScreen> {
                       prefixIcon: Icons.person_outline,
                       validator: (v) => v!.isEmpty ? 'Requerido' : null,
                     ),
+                    Text(
+                      'Actual: ${widget.usuario['apellido']}',
+                      style: AppTextStyles.caption.copyWith(
+                        color: AppColors.textHint,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
                     AuthTextField(
                       label: 'Teléfono',
                       hint: '5491112345678',
@@ -196,6 +211,14 @@ class _EditarUsuarioScreenState extends State<EditarUsuarioScreen> {
                       prefixIcon: Icons.phone_outlined,
                       validator: (v) => v!.isEmpty ? 'Requerido' : null,
                     ),
+                    Text(
+                      'Actual: ${widget.usuario['telefono']}',
+                      style: AppTextStyles.caption.copyWith(
+                        color: AppColors.textHint,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
 
                     // Rol
                     Text('Rol', style: AppTextStyles.label),
