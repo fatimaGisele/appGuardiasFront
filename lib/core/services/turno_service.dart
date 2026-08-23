@@ -22,7 +22,7 @@ class TurnoService {
       }
       return turnos;
     }
-      //return data.map((json) => Turno.fromJson(json)).toList();
+    //return data.map((json) => Turno.fromJson(json)).toList();
     return [];
   }
 
@@ -31,35 +31,44 @@ class TurnoService {
       '${ApiConstants.baseUrl}/turnos/checkin/$turnoId/',
       {},
     );
-    return response.statusCode==200;
+    return response.statusCode == 200;
   }
 
   static Future<Map<String, dynamic>> crearTurno({
-  required String nombre,
-  required String descripcion,
-  required DateTime fechaInicio,
-  required DateTime fechaFin,
-  required int usuarioAsignadoId,
-  required int usuarioRalevoId,
-  required int calendarioId,
-}) async {
-  final response = await ApiCliente.post(ApiConstants.turnos, {
-    'nombre': nombre,
-    'descripcion': descripcion,
-    'fecha_inicio': fechaInicio.toIso8601String(),
-    'fecha_fin': fechaFin.toIso8601String(),
-    'usuario_asignado': usuarioAsignadoId,
-    'usuario_relevo_id': usuarioRalevoId,
-    'calendario': calendarioId,
-    'grupo_escalamiento': 1, // ← hacer un selector
-  });
+    required String nombre,
+    required String descripcion,
+    required DateTime fechaInicio,
+    required DateTime fechaFin,
+    required int usuarioAsignadoId,
+    required int usuarioRalevoId,
+    required int calendarioId,
+    bool forzar = false,
+  }) async {
+    final response = await ApiCliente.post(ApiConstants.turnos, {
+      'nombre': nombre,
+      'descripcion': descripcion,
+      'fecha_inicio': fechaInicio.toIso8601String(),
+      'fecha_fin': fechaFin.toIso8601String(),
+      'usuario_asignado': usuarioAsignadoId,
+      'usuario_relevo_id': usuarioRalevoId,
+      'calendario': calendarioId,
+      'grupo_escalamiento': 1, // ← hacer un selector
+      'forzar': forzar,
+    });
 
-  if (response.statusCode == 201) {
-    return {'success': true};
+    if (response.statusCode == 201) {
+      return {'success': true};
+    }
+    final data = jsonDecode(response.body);
+    if (data is Map && data.containsKey('vacacion_conflicto')) {
+      return {
+        'success': false,
+        'vacacion_conflicto': true,
+        'mensaje': data['vacacion_conflicto'],
+      };
+    }
+    return {'success': false, 'error': data.toString()};
   }
-  final data = jsonDecode(response.body);
-  return {'success': false, 'error': data.toString()};
-}
 
   static Future<List<Turno>> getMisTurnos() async {
     final response = await ApiCliente.get(ApiConstants.misTurnos);
@@ -67,12 +76,14 @@ class TurnoService {
       final List data = jsonDecode(response.body);
       List<Turno> turnos = [];
       for (var json in data) {
-        try { turnos.add(Turno.fromJson(json)); } catch (e) { print(e); }
+        try {
+          turnos.add(Turno.fromJson(json));
+        } catch (e) {
+          print(e);
+        }
       }
       return turnos;
     }
     return [];
   }
-
- 
 }

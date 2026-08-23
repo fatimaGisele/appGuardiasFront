@@ -37,7 +37,9 @@ class _CrearTurnoScreenState extends State<CrearTurnoScreen> {
 
   Future<void> _cargarDatos() async {
     final todos = await UsuarioService.getUsuarios();
-    final guardias = todos.where((u) => u['rol'] == 3 || u['rol'] == 4).toList();
+    final guardias = todos
+        .where((u) => u['rol'] == 3 || u['rol'] == 4)
+        .toList();
     final calendarios = await CalendarioService.getCalendarios();
     setState(() {
       _usuarios = guardias;
@@ -104,7 +106,7 @@ class _CrearTurnoScreenState extends State<CrearTurnoScreen> {
     });
   }
 
-  Future<void> _crearTurno() async {
+  Future<void> _crearTurno({bool forzar = false}) async {
     if (!_formKey.currentState!.validate()) return;
     if (_fechaInicio == null || _fechaFin == null) {
       _mostrarError('Seleccioná la fecha de inicio y fin');
@@ -137,6 +139,7 @@ class _CrearTurnoScreenState extends State<CrearTurnoScreen> {
       usuarioAsignadoId: _usuarioAsignadoId!,
       usuarioRalevoId: _usuarioRalevoId!,
       calendarioId: _calendarioId!,
+      forzar: forzar,
     );
 
     setState(() => _isLoading = false);
@@ -151,6 +154,57 @@ class _CrearTurnoScreenState extends State<CrearTurnoScreen> {
         ),
       );
       context.go('/home');
+    } else if (result['vacacion_conflicto'] == true) {
+      final confirmar = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          backgroundColor: AppColors.surface,
+          title: Row(
+            children: [
+              const Icon(
+                Icons.warning_amber_outlined,
+                color: AppColors.warning,
+                size: 24,
+              ),
+              const SizedBox(width: 8),
+              Text('Conflicto de vacaciones', style: AppTextStyles.heading3),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(result['mensaje'], style: AppTextStyles.body),
+              const SizedBox(height: 12),
+              Text(
+                '¿Querés asignar la guardia de todas formas?',
+                style: AppTextStyles.bodySecondary,
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: Text('Cancelar', style: AppTextStyles.link),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context, true),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.warning,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                elevation: 0,
+              ),
+              child: const Text('Asignar igual'),
+            ),
+          ],
+        ),
+      );
+      if (confirmar == true) {
+       await _crearTurno(forzar: true);  
+    }
     } else {
       _mostrarError(result['error'] ?? 'Error al crear el turno');
     }
