@@ -60,12 +60,15 @@ class TurnoService {
       return {'success': true};
     }
     final data = jsonDecode(response.body);
-    if (data is Map && data.containsKey('vacacion_conflicto')) {
-      return {
-        'success': false,
-        'vacacion_conflicto': true,
-        'mensaje': data['vacacion_conflicto'],
-      };
+    if (data is Map && data.containsKey('usuario_asignado')) {
+      final msg = data['usuario_asignado'];
+      if(msg is List && msg.isNotEmpty && msg[0].toString().contains('vacaciones') ){
+        return {
+          'success': false,
+          'vacacion_conflicto': true,
+          'mensaje': msg[0].toString(),
+        };  
+      }
     }
     return {'success': false, 'error': data.toString()};
   }

@@ -457,22 +457,24 @@ class _CrearTurnoScreenState extends State<CrearTurnoScreen> {
                     const SizedBox(height: 32),
 
                     // Botón crear
-                    SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: _isLoading ? null : _crearTurno,
-                        style: AppDecorations.primaryButton,
-                        child: _isLoading
-                            ? const SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                  strokeWidth: 2,
-                                ),
-                              )
-                            : Text('Crear turno', style: AppTextStyles.button),
+                    Center(
+                      child:SizedBox(
+                        width: 280,
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: _isLoading ? null : _crearTurno,
+                          style: AppDecorations.primaryButton,
+                          child: _isLoading
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : Text('Crear turno', style: AppTextStyles.button),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 24),
