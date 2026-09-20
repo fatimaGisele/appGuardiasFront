@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "376405727848",
+    "project_id": "guardiasapp-5519c",
+    "storage_bucket": "guardiasapp-5519c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:376405727848:android:f454b220021b51738a79dd",
+        "android_client_info": {
+          "package_name": "com.example.guardias_front"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBP3ZV2yIc2OK9xhkqnMItv1qYT5EVT2XM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
