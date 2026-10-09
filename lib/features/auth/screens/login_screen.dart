@@ -62,14 +62,10 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // Logo
-                Container(
-                  width: 80,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    color: AppColors.primary,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: const Icon(Icons.security, color: Colors.white, size: 40),
+                Image.asset(
+                  'assets/images/LogoPrincipal.png',
+                  width: 120,
+                  height: 120,
                 ),
                 const SizedBox(height: 24),
                 Text('Sistema de Guardias', style: AppTextStyles.heading1),

@@ -134,9 +134,11 @@ class _RegularUserHomeScreenState extends State<RegularUserHomeScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('BLINDSPOT',
-                              style: AppTextStyles.hud.copyWith(
-                                  fontSize: 13, color: AppColors.primary)),
+                          Image.asset(
+                            'assets/images/LogoPrincipal.png',
+                            width: 40,
+                            height: 40,
+                          ),
                           const SizedBox(height: 4),
                           Text('Hola, $nombre 👋',
                               style: AppTextStyles.heading2),
