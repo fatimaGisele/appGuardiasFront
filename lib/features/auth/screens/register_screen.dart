@@ -20,15 +20,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _passwordController = TextEditingController();
   final _password2Controller = TextEditingController();
   bool _isLoading = false;
-  int? _rolSeleccionado;
-
-  // Roles disponibles — deben coincidir con los ids de la BD
-  final List<Map<String, dynamic>> _roles = [
-    {'id': 1, 'nombre': 'Lider'},
-    {'id': 2, 'nombre': 'Encargado'},
-    {'id': 3, 'nombre': 'Guardia'},
-    {'id': 4, 'nombre': 'Relevo'},
-  ];
 
   @override
   void dispose() {
@@ -43,13 +34,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Future<void> _register() async {
     if (!_formKey.currentState!.validate()) return;
-    if (_rolSeleccionado == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Seleccioná un rol')),
-      );
-      return;
-    }
-
     setState(() => _isLoading = true);
 
     final result = await AuthService.register(
@@ -59,7 +43,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       telefono: _telefonoController.text.trim(),
       password: _passwordController.text,
       password2: _password2Controller.text,
-      rolId: _rolSeleccionado!,
     );
 
     setState(() => _isLoading = false);
@@ -179,31 +162,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           }
                           return null;
                         },
-                      ),
-
-                      // Selector de rol
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Rol',
-                            style: AppTextStyles.label,
-                          ),
-                          const SizedBox(height: 6),
-                          DropdownButtonFormField<int>(
-                            value: _rolSeleccionado,
-                            hint: const Text('Seleccioná un rol', style: AppTextStyles.bodySecondary),
-                            decoration: AppDecorations.inputDecoration(hint: ''),
-                            items: _roles.map((rol) {
-                              return DropdownMenuItem<int>(
-                                value: rol['id'],
-                                child: Text(rol['nombre']),
-                              );
-                            }).toList(),
-                            onChanged: (value) =>
-                                setState(() => _rolSeleccionado = value),
-                          ),
-                        ],
                       ),
                       const SizedBox(height: 24),
 

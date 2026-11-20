@@ -40,7 +40,6 @@ class AuthService {
     required String telefono,
     required String password,
     required String password2,
-    required int rolId,
   }) async {
     final responde = await http.post(
       Uri.parse(ApiConstants.register),
@@ -52,7 +51,6 @@ class AuthService {
         'telefono': telefono,
         'password': password,
         'password2': password2,
-        'rol_id': rolId,
       }),
     );
     final data = jsonDecode(responde.body);

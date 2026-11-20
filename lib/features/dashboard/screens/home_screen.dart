@@ -93,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Image.asset(
-                            'assets/images/LogoPrincipal.png',
+                            '../../../../assets/images/LogoPrincipal.png',
                             width: 40,
                             height: 40,
                           ),

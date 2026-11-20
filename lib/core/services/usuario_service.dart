@@ -15,6 +15,29 @@ class UsuarioService {
     return [];
   }
 
+  static Future<Map<String, dynamic>> crear({ ///alta de usuario con rol...requiere sesion de lider o encargado...
+    required String nombre,
+    required String apellido,
+    required String email,
+    required String telefono,
+    required String password,
+    required String password2,
+    required int rolId,
+  }) async {
+    final response = await ApiCliente.post(ApiConstants.usuarios, {
+      'nombre': nombre,
+      'apellido': apellido,
+      'email': email,
+      'telefono': telefono,
+      'password': password,
+     'password2': password2,
+      'rol_id': rolId,
+    });
+    if (response.statusCode == 201) return {'success': true};
+    return {'success': false, 'errors': jsonDecode(response.body)};
+  }
+
+
   static Future<List<EstadisticaUsuario>> getEstadisticaEquipo() async {
     final response = await ApiCliente.get(ApiConstants.estadisticasEquipos);
     if (response.statusCode == 200) {

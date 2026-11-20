@@ -135,7 +135,7 @@ class _RegularUserHomeScreenState extends State<RegularUserHomeScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Image.asset(
-                            'assets/images/LogoPrincipal.png',
+                            '../../../../assets/images/LogoPrincipal.png',
                             width: 40,
                             height: 40,
                           ),

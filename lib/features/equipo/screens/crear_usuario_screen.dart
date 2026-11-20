@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_theme.dart';
-import '../../../core/services/auth_service.dart';
+import '../../../core/services/usuario_service.dart';
 import '../../auth/widgets/auth_text_field.dart';
 
 class CrearUsuarioScreen extends StatefulWidget {
@@ -54,7 +54,7 @@ class _CrearUsuarioScreenState extends State<CrearUsuarioScreen> {
 
     setState(() => _isLoading = true);
 
-    final result = await AuthService.register(
+    final result = await UsuarioService.crear(
       nombre: _nombreCtrl.text.trim(),
       apellido: _apellidoCtrl.text.trim(),
       email: _emailCtrl.text.trim(),
