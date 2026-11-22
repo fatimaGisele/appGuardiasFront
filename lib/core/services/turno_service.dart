@@ -47,8 +47,8 @@ class TurnoService {
     final response = await ApiCliente.post(ApiConstants.turnos, {
       'nombre': nombre,
       'descripcion': descripcion,
-      'fecha_inicio': fechaInicio.toIso8601String(),
-      'fecha_fin': fechaFin.toIso8601String(),
+      'fecha_inicio': fechaInicio.toUtc().toIso8601String(),
+      'fecha_fin': fechaFin.toUtc().toIso8601String(),
       'usuario_asignado': usuarioAsignadoId,
       'usuario_relevo_id': usuarioRalevoId,
       'calendario': calendarioId,

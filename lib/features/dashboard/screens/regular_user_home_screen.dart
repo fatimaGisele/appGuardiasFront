@@ -303,8 +303,8 @@ SliverToBoxAdapter(
                         ),
                         const SizedBox(height: 12),
                         ..._relevosPendientes.map((r) {
-                          final inicio = DateTime.parse(r['fecha_inicio']);
-                          final fin = DateTime.parse(r['fecha_fin']);
+                          final inicio = DateTime.parse(r['fecha_inicio']).toLocal();
+                          final fin = DateTime.parse(r['fecha_fin']).toLocal();
                           return Container(
                             margin: const EdgeInsets.only(bottom: 12),
                             padding: const EdgeInsets.all(16),

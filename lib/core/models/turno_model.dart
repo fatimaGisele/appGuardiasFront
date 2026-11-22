@@ -25,8 +25,8 @@ class Turno {
       nombre: json['nombre'] ??'',
       descripcion: json['descripcion'],
       estado: json['estado'] ?? 'programado',
-      fechaInicio: DateTime.parse(json['fecha_inicio']?? DateTime.now().toIso8601String()),
-      fechaFin: DateTime.parse(json['fecha_fin'] ?? DateTime.now().toIso8601String()),
+      fechaInicio: DateTime.parse(json['fecha_inicio']?? DateTime.now().toIso8601String()).toLocal(),
+      fechaFin: DateTime.parse(json['fecha_fin'] ?? DateTime.now().toIso8601String()).toLocal(),
       usuarioNombre: json['usuario_nombre']
     );
   }
